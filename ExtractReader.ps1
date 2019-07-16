@@ -3,7 +3,8 @@ function Get-ExtractCadNum ($rosreestrExtract)
     [string] $cls = Get-ExtractClass ($rosreestrExtract)
     switch ($cls){
     'KVZU' {[string] $xpath="/*[local-name() = 'KVZU']/*[local-name() = 'Parcels']/*[local-name() = 'Parcel']/@CadastralNumber"}
-    'KVOKS'{[string] $xpath="/*[local-name() = 'KVOKS']/*[local-name() = 'Realty']/*[local-name() = 'Building']/@CadastralNumber"}
+    'KVOKS'{[string] $xpath="/*[local-name() = 'KVOKS']/*[local-name() = 'Realty']/*[@CadastralNumber]/@CadastralNumber"}
+    'KPOKS'{[string] $xpath="/*[local-name() = 'KPOKS']/*[local-name() = 'Realty']/*[@CadastralNumber]/@CadastralNumber"}
     'KPT'{[string] $xpath="/*[local-name() = 'KPT']/*[local-name() = 'CadastralBlocks']/*[local-name() = 'CadastralBlock']/@CadastralNumber"}
     'CadastralCostDoc'{[string] $xpath="/*[local-name() = 'CadastralCostDoc']/*[local-name() = 'Object']/@CadastralNumber"}
     'KPZU'{[string] $xpath="/*[local-name() = 'KPZU']/*[local-name() = 'Parcel']/@CadastralNumber"}
@@ -21,9 +22,9 @@ function Get-ExtractDate ($rosreestrExtract)
     switch ($cls){    
     {$_ -in 'extract_base_params_land', 'extract_base_params_build', 'extract_cadastral_plan_territory'}`
         {[string] $xpath="/*/details_statement/group_top_requisites/date_formation/text()"}
-    {$_ -in 'KPT', 'CadastralCostDoc'}`
+    {$_ -in 'KPT', 'CadastralCostDoc', 'KPZU'}`
         {[string] $xpath="/*/*[local-name() = 'CertificationDoc']/*[local-name() = 'Date']/text()"}    
-    Default`
+    Default `
         {[string] $xpath="//*[local-name() = 'ReestrExtract']/*[local-name() = 'DeclarAttribute']/@ExtractDate"}
     }
     
@@ -31,9 +32,9 @@ function Get-ExtractDate ($rosreestrExtract)
 
 
     switch ($cls){
-    {$_ -in 'extract_cadastral_plan_territory', 'extract_base_params_land', 'KPT', 'extract_base_params_build'} `
+    {$_ -in 'extract_cadastral_plan_territory', 'extract_base_params_land', 'KPT', 'KPZU', 'extract_base_params_build', 'CadastralCostDoc'} `
         {[DateTime] $date = [datetime]::ParseExact($dateStr,"yyyy-MM-dd",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))}
-    Default`
+    Default `
         {[DateTime] $date = [datetime]::ParseExact($dateStr,"dd.MM.yyyy",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))}
     }
 
