@@ -65,6 +65,8 @@ function Get-ExtractAuxFile ($rosreestrExtract)
                                  ($fileName+".xml.sig"), `
                                  ($fileName+".pdf"), `
                                  ($fileName+".pdf.sig"), `
-                                 ($fileName+".xps"))
+                                 ($fileName+".xps"), `
+                                 ($fileName+".htm"), `
+                                 ($fileName+".html"))
     return $auxFiles
 }
