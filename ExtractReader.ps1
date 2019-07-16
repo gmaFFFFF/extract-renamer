@@ -28,8 +28,16 @@ function Get-ExtractDate ($rosreestrExtract)
         {[string] $xpath="//*[local-name() = 'ReestrExtract']/*[local-name() = 'DeclarAttribute']/@ExtractDate"}
     }
     
-    [string] $dateStr = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value
-
+    try
+    {
+        [string] $dateStr = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value
+    }
+    catch [system.exception]
+    {
+        Write-Host "Ошибка при обработке файла " $rosreestrExtract
+        Write-Host "Не найдена дата документа"
+        $dateStr = "1990-01-01"
+    }
 
     switch ($cls){
     {$_ -in 'extract_cadastral_plan_territory', 'extract_base_params_land', 'KPT', 'KPZU', 'extract_base_params_build', 'CadastralCostDoc'} `
