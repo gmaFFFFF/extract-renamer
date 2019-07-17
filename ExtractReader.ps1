@@ -5,12 +5,14 @@ function Get-ExtractCadNum ($rosreestrExtract)
     'KVZU' {[string] $xpath="/*[local-name() = 'KVZU']/*[local-name() = 'Parcels']/*[local-name() = 'Parcel']/@CadastralNumber"}
     'KVOKS'{[string] $xpath="/*[local-name() = 'KVOKS']/*[local-name() = 'Realty']/*[@CadastralNumber]/@CadastralNumber"}
     'KPOKS'{[string] $xpath="/*[local-name() = 'KPOKS']/*[local-name() = 'Realty']/*[@CadastralNumber]/@CadastralNumber"}
+    {$_ -in 'Region_Cadastr_Vidimus_KP','Region_Cadastr_Vidimus_KV', 'KPZU'}{[string] $xpath="//*[local-name() = 'Parcel']/@CadastralNumber"}    
+    'Region_Cadastr'{[string] $xpath="/Region_Cadastr/Package/Cadastral_Blocks/Cadastral_Block/@CadastralNumber"}
     'KPT'{[string] $xpath="/*[local-name() = 'KPT']/*[local-name() = 'CadastralBlocks']/*[local-name() = 'CadastralBlock']/@CadastralNumber"}
     'CadastralCostDoc'{[string] $xpath="/*[local-name() = 'CadastralCostDoc']/*[local-name() = 'Object']/@CadastralNumber"}
-    'KPZU'{[string] $xpath="/*[local-name() = 'KPZU']/*[local-name() = 'Parcel']/@CadastralNumber"}
     'extract_cadastral_plan_territory'{[string] $xpath="/extract_cadastral_plan_territory/cadastral_blocks/cadastral_block/cadastral_number/text()"}
     'extract_base_params_land'{[string] $xpath="/extract_base_params_land/land_record/object/common_data/cad_number/text()"}
     'extract_base_params_build'{[string] $xpath="/extract_base_params_build/build_record/object/common_data/cad_number/text()"}    
+    'Extract'{[string] $xpath="/Extract/ReestrExtract/ExtractObjectRight/ExtractObject/ObjectRight/ObjectDesc/CadastralNumber/text()"}    
     }
     [string] $cn = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value    
     return $cn
@@ -23,7 +25,9 @@ function Get-ExtractDate ($rosreestrExtract)
     {$_ -in 'extract_base_params_land', 'extract_base_params_build', 'extract_cadastral_plan_territory'}`
         {[string] $xpath="/*/details_statement/group_top_requisites/date_formation/text()"}
     {$_ -in 'KPT', 'CadastralCostDoc', 'KPZU'}`
-        {[string] $xpath="/*/*[local-name() = 'CertificationDoc']/*[local-name() = 'Date']/text()"}    
+        {[string] $xpath="//*[local-name() = 'CertificationDoc']/*[local-name() = 'Date']/text()"}    
+    {$_ -in 'Region_Cadastr_Vidimus_KP', 'Region_Cadastr_Vidimus_KV','Region_Cadastr'}`
+        {[string] $xpath="//*[local-name() = 'Certification_Doc']/*[local-name() = 'Date']/text()"}    
     Default `
         {[string] $xpath="//*[local-name() = 'ReestrExtract']/*[local-name() = 'DeclarAttribute']/@ExtractDate"}
     }
@@ -40,8 +44,12 @@ function Get-ExtractDate ($rosreestrExtract)
     }
 
     switch ($cls){
-    {$_ -in 'extract_cadastral_plan_territory', 'extract_base_params_land', 'KPT', 'KPZU', 'extract_base_params_build', 'CadastralCostDoc'} `
+    {$_ -in 'extract_cadastral_plan_territory', 'extract_base_params_land', `
+            'KPT', 'KPZU', 'extract_base_params_build', 'CadastralCostDoc', `
+            'Region_Cadastr', 'Region_Cadastr_Vidimus_KP', 'Region_Cadastr_Vidimus_KV'} `
         {[DateTime] $date = [datetime]::ParseExact($dateStr,"yyyy-MM-dd",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))}
+    'Extract' `
+        {[DateTime] $date = [datetime]::ParseExact($dateStr,"dd-MM-yyyy",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))}
     Default `
         {[DateTime] $date = [datetime]::ParseExact($dateStr,"dd.MM.yyyy",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))}
     }
