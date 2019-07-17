@@ -14,7 +14,15 @@ function Generate-ExtractRenameTable($rosreestrExtracts)
         [string] $fileName = $extract.Name
         [string] $extractName = [io.path]::GetFileNameWithoutExtension($fileName)
      
-        [string] $newName = "{2}_{1}_{0}" -f ($extrDate.ToString("yyyy-MM-dd")),$extrCadNum.Replace(":","-"),$extrClass
+        [string] $newBigName = "{0}_{1}_{2}" -f ($extrCadNum.Replace(":"," "), $extrDate.ToString("yyyy-MM-dd"), $extrClass)        
+        [string] $newShortName = "{0}_{1}" -f ($extrDate.ToString("yyyy-MM-dd"), $extrClass)
+
+        if ($extract.Directory.Name -eq $extrCadNum.Replace(":"," ")){
+            [string] $newFolder = $extract.Directory.FullName
+        }
+        else{
+            [string] $newFolder = $extract.Directory.FullName + '\' + $extrCadNum.Replace(":"," ")
+        }
         
         [array] $allFile = Get-ExtractAuxFile($extract)
         $allFile += $extract
@@ -23,7 +31,9 @@ function Generate-ExtractRenameTable($rosreestrExtracts)
         {
             $rec = [PSCustomObject]@{
                     Path=$file.FullName
-                    NewName = $file.Name.Replace($extractName,$newName)
+                    NewBigName = $file.Name.Replace($extractName,$newBigName)
+                    NewShortName = $file.Name.Replace($extractName,$newShortName)
+                    NewFolder = $newFolder
                     CadNum = $extrCadNum
                     ClassExtr = $extrClass
                     Date = $extrDate
