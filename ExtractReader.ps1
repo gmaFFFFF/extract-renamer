@@ -67,7 +67,7 @@ function Get-ExtractAuxFile ($rosreestrExtract)
     $fileName = [Management.Automation.WildcardPattern]::Escape($fileName)
     [string] $folder = [Management.Automation.WildcardPattern]::Escape($rosreestrExtract.Directory.FullName) + "\*"
 
-        [array] $auxFiles = @(Get-ChildItem -Path $folder `
+    [array] $auxFiles = @(Get-ChildItem -Path $folder `
                         -Include ($fileName+".xml.original.sig"), `
                                  ($fileName+".xml.original"), `
                                  ($fileName+".xml.sig"), `
