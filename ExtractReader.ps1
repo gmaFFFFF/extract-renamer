@@ -13,6 +13,7 @@ function Get-ExtractCadNum ($rosreestrExtract)
     'extract_base_params_land'{[string] $xpath="/extract_base_params_land/land_record/object/common_data/cad_number/text()"}
     'extract_base_params_build'{[string] $xpath="/extract_base_params_build/build_record/object/common_data/cad_number/text()"}    
     'Extract'{[string] $xpath="/Extract/ReestrExtract/ExtractObjectRight/ExtractObject/ObjectRight/ObjectDesc/CadastralNumber/text()"}    
+    'Reestr_Extract_Object'{[string] $xpath="/Reestr_Extract_Object/ReestrExtract/ExtractObjectRight/ObjectRight/CadastralNumber/text()|/Reestr_Extract_Object/ReestrExtract/ExtractObjectRightRefusal/CadastralNumber/text()"}
     }
     [string] $cn = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value    
     return $cn
