@@ -4,7 +4,7 @@
 [string] $path = "C:\Users\user\Desktop\test"
 [bool] $isMoveToFolder = $true
 
-[string] $renTableName = $path + "\renameTable.csv"
+[string] $renTableName = $path + "\_renameTable.csv"
 
 if (Test-Path -Path $renTableName){
     if ($isMoveToFolder){
@@ -28,4 +28,3 @@ else
     [array] $files = ls $path -Filter *.xml -Recurs
     Generate-ExtractRenameTable($files) | Export-Csv -Path ($renTableName) -Encoding UTF8
 }
- 
