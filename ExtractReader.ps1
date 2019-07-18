@@ -29,7 +29,7 @@ function Get-ExtractDate ($rosreestrExtract)
     switch ($cls){    
     {$_ -in 'extract_base_params_land', 'extract_base_params_build', 'extract_cadastral_plan_territory'}`
         {[string] $xpath="/*/details_statement/group_top_requisites/date_formation/text()"}
-    {$_ -in 'KPT', 'CadastralCostDoc', 'KPZU'}`
+    {$_ -in 'KPT', 'CadastralCostDoc', 'KPZU', 'KVZU'}`
         {[string] $xpath="//*[local-name() = 'CertificationDoc']/*[local-name() = 'Date']/text()"}    
     {$_ -in 'Region_Cadastr_Vidimus_KP', 'Region_Cadastr_Vidimus_KV','Region_Cadastr'}`
         {[string] $xpath="//*[local-name() = 'Certification_Doc']/*[local-name() = 'Date']/text()"}    
@@ -40,19 +40,17 @@ function Get-ExtractDate ($rosreestrExtract)
 
     [string] $dateStr = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value
    
-    if($dateStr -eq ""){
+    if(!$dateStr){
         return [datetime]::ParseExact("1990-01-01","yyyy-MM-dd",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))
     }
 
-    switch ($cls){
-    {$_ -in 'extract_cadastral_plan_territory', 'extract_base_params_land', `
-            'KPT', 'KPZU', 'extract_base_params_build', 'CadastralCostDoc', `
-            'Region_Cadastr', 'Region_Cadastr_Vidimus_KP', 'Region_Cadastr_Vidimus_KV'} `
-        {[DateTime] $date = [datetime]::ParseExact($dateStr,"yyyy-MM-dd",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))}
-    'Extract' `
+    $dateStr = $dateStr.Replace('.','-')
+
+    switch -regex ($dateStr){    
+    '^\d{1,2}-\d{1,2}-\d\d\d\d$' `
         {[DateTime] $date = [datetime]::ParseExact($dateStr,"dd-MM-yyyy",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))}
     Default `
-        {[DateTime] $date = [datetime]::ParseExact($dateStr,"dd.MM.yyyy",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))}
+        {[DateTime] $date = [datetime]::ParseExact($dateStr,"yyyy-MM-dd",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))}
     }
 
 
