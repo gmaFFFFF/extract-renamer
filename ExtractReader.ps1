@@ -18,7 +18,8 @@ function Get-ExtractCadNum ($rosreestrExtract)
     'Reestr_Extract_Object'{[string] $xpath="/Reestr_Extract_Object/ReestrExtract/ExtractObjectRight/ObjectRight/CadastralNumber/text()" + `
                              "|/Reestr_Extract_Object/ReestrExtract/ExtractObjectRightRefusal/CadastralNumber/text()"}
     }
-    [string] $cn = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value    
+    [string] $cn = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value
+    
     return $cn
 }
 
@@ -36,15 +37,11 @@ function Get-ExtractDate ($rosreestrExtract)
         {[string] $xpath="//*[local-name() = 'ReestrExtract']/*[local-name() = 'DeclarAttribute']/@ExtractDate"}
     }
     
-    try
-    {
-        [string] $dateStr = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value
-    }
-    catch [system.exception]
-    {
-        Write-Host "Ошибка при обработке файла " $rosreestrExtract
-        Write-Host "Не найдена дата документа"
-        $dateStr = "1990-01-01"
+
+    [string] $dateStr = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value
+   
+    if($dateStr -eq ""){
+        return [datetime]::ParseExact("1990-01-01","yyyy-MM-dd",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))
     }
 
     switch ($cls){
