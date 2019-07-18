@@ -14,7 +14,7 @@ if (Test-Path -Path $renTableName){
                   New-Item -ItemType Directory -Force -Path $elem.NewFolder | Out-Null
             }
 
-            Move-Item -LiteralPath $elem.Path -Destination ($elem.NewFolder + '\' + $elem.NewShortName)
+            Move-Item -LiteralPath $elem.Path -Destination ($elem.NewFolder + '\' + $elem.NewShortName) -Force
         }
 
     }
