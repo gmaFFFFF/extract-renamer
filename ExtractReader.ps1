@@ -2,21 +2,22 @@ function Get-ExtractCadNum ($rosreestrExtract)
 {
     [string] $cls = Get-ExtractClass ($rosreestrExtract)
     switch ($cls){
-    'KVZU' {[string] $xpath="/*[local-name() = 'KVZU']/*[local-name() = 'Parcels']/*[local-name() = 'Parcel']/@CadastralNumber"}
-    'KVOKS'{[string] $xpath="/*[local-name() = 'KVOKS']/*[local-name() = 'Realty']/*[@CadastralNumber]/@CadastralNumber"}
-    'KPOKS'{[string] $xpath="/*[local-name() = 'KPOKS']/*[local-name() = 'Realty']/*[@CadastralNumber]/@CadastralNumber"}
+    'KVZU' {[string] $xpath="/*[local-name() = 'KVZU']/*[local-name() = 'Parcels']/*[local-name() = 'Parcel']/@CadastralNumber"}    
+    {$_ -in 'KPOKS', 'KP_OKS', 'KVOKS'}{[string] $xpath="//*[local-name() = 'Realty']/*[@CadastralNumber]/@CadastralNumber"}
     {$_ -in 'Region_Cadastr_Vidimus_KP','Region_Cadastr_Vidimus_KV', 'KPZU'}{[string] $xpath="//*[local-name() = 'Parcel']/@CadastralNumber"}    
     'Region_Cadastr'{[string] $xpath="//Cadastral_Blocks/Cadastral_Block/@CadastralNumber"}                                      
     'KPT'{[string] $xpath="/*[local-name() = 'KPT']/*[local-name() = 'CadastralBlocks']/*[local-name() = 'CadastralBlock']/@CadastralNumber"}
     'CadastralCostDoc'{[string] $xpath="/*[local-name() = 'CadastralCostDoc']/*[local-name() = 'Object']/@CadastralNumber"}
     'extract_cadastral_plan_territory'{[string] $xpath="/extract_cadastral_plan_territory/cadastral_blocks/cadastral_block/cadastral_number/text()"}
-    'extract_base_params_land'{[string] $xpath="/extract_base_params_land/land_record/object/common_data/cad_number/text()"}
-    'extract_base_params_build'{[string] $xpath="/extract_base_params_build/build_record/object/common_data/cad_number/text()"}    
+    {$_ -in 'extract_base_params_land', 'extract_base_params_build','extract_base_params_construction'} `
+        {[string] $xpath="//object/common_data/cad_number/text()"}
     'Extract'{[string] $xpath="//ObjectRight/ObjectDesc/CadastralNumber/text()" + `
                              "|//NoticeObj/ObjectDetail/CadastralNumber/text()" + `
-                             "|//RefusalObj/ObjectDetail/CadastralNumber/text()"}    
+                             "|//RefusalObj/ObjectDetail/CadastralNumber/text()" + `
+                             "|//ExtractObject/ObjectDesc/CadastralNumber/text()"}    
     'Reestr_Extract_Object'{[string] $xpath="/Reestr_Extract_Object/ReestrExtract/ExtractObjectRight/ObjectRight/CadastralNumber/text()" + `
                              "|/Reestr_Extract_Object/ReestrExtract/ExtractObjectRightRefusal/CadastralNumber/text()"}
+    
     }
     [string] $cn = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value
     
@@ -27,12 +28,16 @@ function Get-ExtractDate ($rosreestrExtract)
 {
     [string] $cls = Get-ExtractClass ($rosreestrExtract)
     switch ($cls){    
-    {$_ -in 'extract_base_params_land', 'extract_base_params_build', 'extract_cadastral_plan_territory'}`
+    {$_ -in 'extract_base_params_build', 'extract_base_params_land','extract_base_params_construction', 'extract_cadastral_plan_territory'}`
         {[string] $xpath="/*/details_statement/group_top_requisites/date_formation/text()"}
-    {$_ -in 'KPT', 'CadastralCostDoc', 'KPZU', 'KVZU'}`
-        {[string] $xpath="//*[local-name() = 'CertificationDoc']/*[local-name() = 'Date']/text()"}    
-    {$_ -in 'Region_Cadastr_Vidimus_KP', 'Region_Cadastr_Vidimus_KV','Region_Cadastr'}`
-        {[string] $xpath="//*[local-name() = 'Certification_Doc']/*[local-name() = 'Date']/text()"}    
+
+    {$_ -in 'Region_Cadastr', 'Region_Cadastr_Vidimus_KP', 'Region_Cadastr_Vidimus_KV','CadastralCostDoc', 'KPOKS', 'KP_OKS', 'KPZU', 'KVZU', 'KPT', 'KVOKS'}`
+        {[string] $xpath="//*[local-name() = 'CertificationDoc']/*[local-name() = 'Date']/text()" + `
+        "|//*[local-name() = 'Certification_Doc']/*[local-name() = 'Date']/text()"}    
+    
+    'Reestr_Extract_Object' `
+        {[string] $xpath="//*[local-name() = 'ReestrExtract']/@ExtractDate"}
+         
     Default `
         {[string] $xpath="//*[local-name() = 'ReestrExtract']/*[local-name() = 'DeclarAttribute']/@ExtractDate"}
     }
