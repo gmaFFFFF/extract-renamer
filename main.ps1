@@ -13,8 +13,11 @@ if (Test-Path -Path $renTableName){
             If(!(Test-Path $elem.NewFolder)){
                   New-Item -ItemType Directory -Force -Path $elem.NewFolder | Out-Null
             }
-
-            Move-Item -LiteralPath $elem.Path -Destination ($elem.NewFolder + '\' + $elem.NewShortName) -Force
+            
+            if ($elem.Path -ne ($elem.NewFolder + '\' + $elem.NewShortName)){
+                Move-Item -LiteralPath $elem.Path -Destination ($elem.NewFolder + '\' + $elem.NewShortName) -Force
+                Write-Host ("Move to: " + $elem.NewFolder + '\' + $elem.NewShortName)
+            }
         }
 
     }
