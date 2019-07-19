@@ -6,6 +6,7 @@ function Generate-ExtractRenameTable($rosreestrExtracts)
     [array]$RenameTable = @()
     foreach ($extract in $rosreestrExtracts)
     {   
+        Write-Host ("Processing: " + $extract.FullName)
                        
         [string] $extrClass = Get-ExtractClass($extract)
         [DateTime] $extrDate = Get-ExtractDate($extract)
@@ -43,5 +44,4 @@ function Generate-ExtractRenameTable($rosreestrExtracts)
     }
     return $RenameTable
 }
-
 
