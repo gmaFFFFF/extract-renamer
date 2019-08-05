@@ -5,10 +5,11 @@
 [bool] $isMoveToFolder = $true
 
 [string] $renTableName = $path + "\_renameTable.csv"
+[DateTime] $errorDate = [datetime]::ParseExact("1990-01-01","yyyy-MM-dd",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))
 
 if (Test-Path -Path $renTableName){
     if ($isMoveToFolder){
-        $extracts =  Import-Csv ($renTableName) -Encoding UTF8
+        $extracts =  Import-Csv ($renTableName) -Encoding UTF8 | where {$_.CadNum -and ($_.Date -ne $errorDate -and $_.Date)}
         foreach ($elem in $extracts) {
             If(!(Test-Path $elem.NewFolder)){
                   New-Item -ItemType Directory -Force -Path $elem.NewFolder | Out-Null
@@ -22,7 +23,7 @@ if (Test-Path -Path $renTableName){
 
     }
     else {
-        Import-Csv ($renTableName) -Encoding UTF8 | foreach { Rename-Item -LiteralPath $_.Path -NewName $_.NewBigName}
+        Import-Csv ($renTableName) -Encoding UTF8 | where {$_.CadNum -and ($_.Date -ne $errorDate -and $_.Date)} | foreach { Rename-Item -LiteralPath $_.Path -NewName $_.NewBigName}
     }
     Remove-Item $renTableName -Force
 }
