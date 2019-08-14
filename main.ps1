@@ -1,6 +1,8 @@
+Set-Location ($MyInvocation.MyCommand.Path | Split-Path -Parent)
+
 . .\RenameTable.ps1
 
-# [string] $path = $MyInvocation.MyCommand.Path | Split-Path -Parent
+
 [string] $path = "C:\Users\user\Desktop\test"
 [bool] $isMoveToFolder = $true
 
