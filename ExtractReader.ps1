@@ -17,7 +17,7 @@ function Get-ExtractCadNum ($rosreestrExtract)
     {$_ -in 'Region_Cadastr_Vidimus_KP','Region_Cadastr_Vidimus_KV', 'KPZU'}{[string] $xpath="//*[local-name() = 'Parcel']/@CadastralNumber"}    
     {$_ -in 'extract_base_params_land', 'extract_base_params_build','extract_base_params_construction', 'extract_about_property_land', 
 			'extract_about_property_construction', 'extract_about_property_build', 'extract_cadastral_value_property', 
-			'extract_transfer_rights_property'} `
+			'extract_transfer_rights_property', 'extract_base_params_room'} `
         {[string] $xpath="(//object/common_data/cad_number)[1]/text()"}
     
     }
@@ -31,8 +31,8 @@ function Get-ExtractDate ($rosreestrExtract)
     [string] $cls = Get-ExtractClass ($rosreestrExtract)
     switch ($cls){
     {$_ -in 'extract_base_params_build', 'extract_base_params_land','extract_base_params_construction', 'extract_cadastral_plan_territory', 
-		'extract_about_property_land', 'extract_about_property_construction', 'extract_about_property_build', 
-		'extract_cadastral_value_property', 'extract_transfer_rights_property'}`
+				'extract_about_property_land', 'extract_about_property_construction', 'extract_about_property_build', 
+				'extract_cadastral_value_property', 'extract_transfer_rights_property', 'extract_base_params_room'}`
         {[string] $xpath="/*/details_statement/group_top_requisites/date_formation/text()"}
 
     {$_ -in 'Region_Cadastr', 'Region_Cadastr_Vidimus_KP', 'Region_Cadastr_Vidimus_KV','CadastralCostDoc', 'KPOKS', 'KP_OKS', 'KPZU', 'KVZU', 'KPT', 'KVOKS'}`
