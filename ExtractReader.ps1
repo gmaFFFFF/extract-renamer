@@ -9,7 +9,7 @@ function Get-ExtractCadNum ($rosreestrExtract)
     'KPT'{[string] $xpath="/*[local-name() = 'KPT']/*[local-name() = 'CadastralBlocks']/*[local-name() = 'CadastralBlock']/@CadastralNumber"}
     'CadastralCostDoc'{[string] $xpath="/*[local-name() = 'CadastralCostDoc']/*[local-name() = 'Object']/@CadastralNumber"}
     'extract_cadastral_plan_territory'{[string] $xpath="/extract_cadastral_plan_territory/cadastral_blocks/cadastral_block/cadastral_number/text()"}
-    {$_ -in 'extract_base_params_land', 'extract_base_params_build','extract_base_params_construction', 'extract_about_property_land'} `
+    {$_ -in 'extract_base_params_land', 'extract_base_params_build','extract_base_params_construction', 'extract_about_property_land', 'extract_about_property_construction', 'extract_about_property_build'} `
         {[string] $xpath="//object/common_data/cad_number/text()"}
     'Extract'{[string] $xpath="//ObjectRight/ObjectDesc/CadastralNumber/text()" + `
                              "|//NoticeObj/ObjectDetail/CadastralNumber/text()" + `
@@ -28,7 +28,7 @@ function Get-ExtractDate ($rosreestrExtract)
 {
     [string] $cls = Get-ExtractClass ($rosreestrExtract)
     switch ($cls){
-    {$_ -in 'extract_base_params_build', 'extract_base_params_land','extract_base_params_construction', 'extract_cadastral_plan_territory', 'extract_about_property_land'}`
+    {$_ -in 'extract_base_params_build', 'extract_base_params_land','extract_base_params_construction', 'extract_cadastral_plan_territory', 'extract_about_property_land', 'extract_about_property_construction', 'extract_about_property_build'}`
         {[string] $xpath="/*/details_statement/group_top_requisites/date_formation/text()"}
 
     {$_ -in 'Region_Cadastr', 'Region_Cadastr_Vidimus_KP', 'Region_Cadastr_Vidimus_KV','CadastralCostDoc', 'KPOKS', 'KP_OKS', 'KPZU', 'KVZU', 'KPT', 'KVOKS'}`
