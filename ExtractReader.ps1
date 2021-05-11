@@ -10,7 +10,7 @@ function Get-ExtractCadNum ($rosreestrExtract)
     'CadastralCostDoc'{[string] $xpath="/*[local-name() = 'CadastralCostDoc']/*[local-name() = 'Object']/@CadastralNumber"}
     'extract_cadastral_plan_territory'{[string] $xpath="/extract_cadastral_plan_territory/cadastral_blocks/cadastral_block/cadastral_number/text()"}
     {$_ -in 'extract_base_params_land', 'extract_base_params_build','extract_base_params_construction', 'extract_about_property_land', 'extract_about_property_construction', 'extract_about_property_build'} `
-        {[string] $xpath="//object/common_data/cad_number/text()"}
+        {[string] $xpath="(//object/common_data/cad_number)[1]/text()"}
     'Extract'{[string] $xpath="//ObjectRight/ObjectDesc/CadastralNumber/text()" + `
                              "|//NoticeObj/ObjectDetail/CadastralNumber/text()" + `
                              "|//RefusalObj/ObjectDetail/CadastralNumber/text()" + `
