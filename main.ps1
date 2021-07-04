@@ -3,7 +3,7 @@ Set-Location ($MyInvocation.MyCommand.Path | Split-Path -Parent)
 . .\RenameTable.ps1
 
 
-[string] $path = "C:\Users\user\Desktop\test"
+[string] $path = $env:USERPROFILE + "\desktop\extracts-downloaded"
 [bool] $isMoveToFolder = $true
 
 [string] $renTableName = $path + "\_renameTable.csv"
