@@ -1,0 +1,28 @@
+== Установка и настройка (Windows)
+
+=== Установка Windows PowerShell
+Установите на рабочем компьютере Windows PowerShell версии не менее 5.0footnote:[В Windows 10 минимально необходимая версия доступна «из коробки»].
+
+Ссылки на установочные пакеты в зависимости от версии операционной системы и архитектуры доступны на https://docs.microsoft.com/ru-ru/powershell/scripting/windows-powershell/wmf/setup/install-configure?view=powershell-7.1#download-and-install-the-wmf-51-package[сайте] microsoft.
+
+=== Настройка безопасности выполнения скриптов Windows PowerShell
+
+По умолчанию на клиентских компьютерах Windows запрещено выполнение сценариев Windows PowerShell, подробности смотрите в документации https://docs.microsoft.com/ru-ru/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.1[о политике выполнения PowerShell].
+
+Разрешить выполнение нашего скрипт можно изменив политику «ExecutionPolicy» на RemoteSignedfootnote:[Предпочтительно] или Unrestricted.
+
+Для этого запустите (например, из меню Пуск) Windows PowerShell или Windows PowerShell ISE от имени администратора (нажмите по ярлыку btn:[ПКМ], а затем "Запуск от имени администратора") и выполните команду:
+
+[source,powershell]
+Set-ExecutionPolicy RemoteSigned
+
+image::Set-ExecutionPolicy_start.png[Ввод команды]
+
+Подтвердите PowerShell свое намерение во всплывающем диалоговом окне.
+
+image::Set-ExecutionPolicy_confirm.png[Подтверждение изменения политики]
+
+Если впоследствии возникнут проблемы с политикой безопасности измените её на Unrestricted:
+
+[source,powershell]
+Set-ExecutionPolicy Unrestricted

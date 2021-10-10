@@ -1,0 +1,17 @@
+[#скачать_скрипт]
+== Загрузка на компьютер
+
+Существует несколько способов загрузки:
+
+* Если на компьютере установлена система контроля версий https://www.mercurial-scm.org/downloads[Mercurial] (_Предпочтительно_):
+. Запустите командную строку и перейдите в каталог, в котором планируется разместить скрипт;
+. Выполните команду:
+[source,shell]
+hg clone http://hg.code.sf.net/p/cadaster-utils/extract-renamer extract-renamer
++
+* Если на компьютере установлена система контроля версий https://git-scm.com/download/win[Git]:
+. Запустите командную строку и перейдите в каталог, в котором планируется разместить скрипт;
+. Выполните команду:
+[source,shell]
+git clone --depth 1 https://github.com/gmaFFFFF/extract-renamer extract-renamer
+* Если систем контроля версий нет, то скачайте файл по https://github.com/gmaFFFFF/extract-renamer/archive/refs/heads/develop.zip[ссылке] и распакуйте его в нужный каталог.
