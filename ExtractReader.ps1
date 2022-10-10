@@ -1,3 +1,5 @@
+[string] $signPicSuffix = "_sign"
+
 function Get-ExtractCadNum ($rosreestrExtract)
 {
     [string] $cls = Get-ExtractClass ($rosreestrExtract)
@@ -91,6 +93,10 @@ function Get-ExtractAuxFile ($rosreestrExtract)
                                  ($fileName+".xml.sig"), `
                                  ($fileName+".pdf"), `
                                  ($fileName+".pdf.sig"), `
+                                 ($fileName+" ÝÏ.pdf"), `
+                                 ($fileName+" ÝÏ.pdf.sig"), `
+                                 ($fileName+$signPicSuffix + ".pdf"), `
+                                 ($fileName+$signPicSuffix + ".pdf.sig"), `
                                  ($fileName+".xps"), `
                                  ($fileName+".htm"), `
                                  ($fileName+".html"))

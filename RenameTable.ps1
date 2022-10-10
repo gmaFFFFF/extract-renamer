@@ -30,10 +30,11 @@ function Generate-ExtractRenameTable($rosreestrExtracts)
 
         foreach($file in $allFile)
         {
+
             $rec = [PSCustomObject]@{
                     Path=$file.FullName
-                    NewBigName = $file.Name.Replace($extractName,$newBigName)
-                    NewShortName = $file.Name.Replace($extractName,$newShortName)
+                    NewBigName = $file.Name.Replace($extractName,$newBigName).Replace(" ÝÏ",$signPicSuffix)
+                    NewShortName = $file.Name.Replace($extractName,$newShortName).Replace(" ÝÏ",$signPicSuffix)
                     NewFolder = $newFolder
                     CadNum = $extrCadNum
                     ClassExtr = $extrClass
