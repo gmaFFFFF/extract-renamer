@@ -37,7 +37,7 @@ function Get-ExtractDate ([Xml] $rosreestrExtractXml)
 				'extract_about_property_land', 'extract_about_property_construction', 'extract_about_property_build', 
 				'extract_cadastral_value_property', 'extract_transfer_rights_property', 'extract_base_params_room',
                 'extract_base_params_under_construction', 'extract_about_property_under_construction', 'extract_about_property_room'}`
-        {[string] $xpath="/*/details_statement/group_top_requisites/date_formation/text()"}
+        {[string] $xpath="/*/details_request/date_receipt_request_reg_authority_rights/text()"}
 
     {$_ -in 'Region_Cadastr', 'Region_Cadastr_Vidimus_KP', 'Region_Cadastr_Vidimus_KV','CadastralCostDoc', 'KPOKS', 'KP_OKS', 'KPZU', 'KVZU', 'KPT', 'KVOKS'}`
         {[string] $xpath="//*[local-name() = 'CertificationDoc']/*[local-name() = 'Date']/text()" + `
