@@ -1,8 +1,8 @@
 [string] $signPicSuffix = "_sign"
 
-function Get-ExtractCadNum ($rosreestrExtract)
+function Get-ExtractCadNum ([Xml] $rosreestrExtractXml)
 {
-    [string] $cls = Get-ExtractClass ($rosreestrExtract)
+    [string] $cls = Get-ExtractClass ($rosreestrExtractXml)
     switch ($cls){
     'KVZU' {[string] $xpath="/*[local-name() = 'KVZU']/*[local-name() = 'Parcels']/*[local-name() = 'Parcel']/@CadastralNumber"}    
     'Region_Cadastr'{[string] $xpath="//Cadastral_Blocks/Cadastral_Block/@CadastralNumber"}                                      
@@ -24,14 +24,14 @@ function Get-ExtractCadNum ($rosreestrExtract)
         {[string] $xpath="(//object/common_data/cad_number)[1]/text()"}
     
     }
-    [string] $cn = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value
+    [string] $cn = (Select-Xml -Xml $rosreestrExtractXml -Xpath $xpath).Node.Value
     
     return $cn
 }
 
-function Get-ExtractDate ($rosreestrExtract)
+function Get-ExtractDate ([Xml] $rosreestrExtractXml)
 {
-    [string] $cls = Get-ExtractClass ($rosreestrExtract)
+    [string] $cls = Get-ExtractClass ($rosreestrExtractXml)
     switch ($cls){
     {$_ -in 'extract_base_params_build', 'extract_base_params_land','extract_base_params_construction', 'extract_cadastral_plan_territory', 
 				'extract_about_property_land', 'extract_about_property_construction', 'extract_about_property_build', 
@@ -51,7 +51,7 @@ function Get-ExtractDate ($rosreestrExtract)
     }
     
 
-    [string] $dateStr = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.Value
+    [string] $dateStr = (Select-Xml -Xml $rosreestrExtractXml -Xpath $xpath).Node.Value
    
     if(!$dateStr){
         return [datetime]::ParseExact("1990-01-01","yyyy-MM-dd",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))
@@ -70,11 +70,11 @@ function Get-ExtractDate ($rosreestrExtract)
     return $date
 }
 
-function Get-ExtractClass ($rosreestrExtract)
+function Get-ExtractClass ([Xml] $rosreestrExtractXml)
 {    
     [string] $xpath = "/*"
     
-    [string] $cls = (Select-Xml -LiteralPath $rosreestrExtract.FullName -Xpath $xpath).Node.LocalName
+    [string] $cls = (Select-Xml -Xml $rosreestrExtractXml -Xpath $xpath).Node.LocalName
 
 
     return $cls

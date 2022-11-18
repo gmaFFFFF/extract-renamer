@@ -7,10 +7,15 @@ function Generate-ExtractRenameTable($rosreestrExtracts)
     foreach ($extract in $rosreestrExtracts)
     {   
         Write-Host ("Processing: " + $extract.FullName)
+        
+        # Ручная загрузка Xml файла, чтобы обойти ограничение MaxCharactersInDocument = 536870912 (0.5gb)
+        [Xml] $extractXml = New-Object Xml
+        $extractXml.Load($extract.FullName)
+
                        
-        [string] $extrClass = Get-ExtractClass($extract)
-        [DateTime] $extrDate = Get-ExtractDate($extract)
-        [string] $extrCadNum = (Get-ExtractCadNum($extract))
+        [string] $extrClass = Get-ExtractClass($extractXml)
+        [DateTime] $extrDate = Get-ExtractDate($extractXml)
+        [string] $extrCadNum = Get-ExtractCadNum($extractXml)
                 
         [string] $fileName = $extract.Name
         [string] $extractName = [io.path]::GetFileNameWithoutExtension($fileName)
