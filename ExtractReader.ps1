@@ -22,11 +22,27 @@ function Get-ExtractCadNum ([Xml] $rosreestrExtractXml)
 			'extract_transfer_rights_property', 'extract_base_params_room', 'extract_base_params_under_construction', 
             'extract_about_property_under_construction', 'extract_about_property_room'} `
         {[string] $xpath="(//object/common_data/cad_number)[1]/text()"}
+	default { [string] $xpath="Unknown" }
     
     }
     [string] $cn = (Select-Xml -Xml $rosreestrExtractXml -Xpath $xpath).Node.Value
     
-    return $cn
+	if (-not $cn){
+		
+		$xpath="//NoticeObj/ObjectInfo/text()" + `
+               "|//RefusalObj/ObjectInfo/text()" + `
+			   "|//ExtractObjectRightRefusal/Name/text()" + `
+			   "|//content_request/text()"
+			   
+		[string] $descr = (Select-Xml -Xml $rosreestrExtractXml -Xpath $xpath).Node.Value
+		[string] $cn_regex = "\d{1,2}:\d{1,2}:\d{1,7}:\d+"
+		
+		if ($descr -match $cn_regex) {
+			$cn = $matches[0]
+		}
+	}
+	
+	return $cn
 }
 
 function Get-ExtractDate ([Xml] $rosreestrExtractXml)
@@ -36,7 +52,9 @@ function Get-ExtractDate ([Xml] $rosreestrExtractXml)
     {$_ -in 'extract_base_params_build', 'extract_base_params_land','extract_base_params_construction', 'extract_cadastral_plan_territory', 
 				'extract_about_property_land', 'extract_about_property_construction', 'extract_about_property_build', 
 				'extract_cadastral_value_property', 'extract_transfer_rights_property', 'extract_base_params_room',
-                'extract_base_params_under_construction', 'extract_about_property_under_construction', 'extract_about_property_room'}`
+                'extract_base_params_under_construction', 'extract_about_property_under_construction', 'extract_about_property_room',
+				'exract_decision_refuse_provide_info', 
+				'exract_notice_absence_request_info_11', 'exract_notice_absence_request_info_12', 'exract_notice_absence_request_info_13'}`
         {[string] $xpath="/*/details_request/date_receipt_request_reg_authority_rights/text()"}
 
     {$_ -in 'Region_Cadastr', 'Region_Cadastr_Vidimus_KP', 'Region_Cadastr_Vidimus_KV','CadastralCostDoc', 'KPOKS', 'KP_OKS', 'KPZU', 'KVZU', 'KPT', 'KVOKS'}`
