@@ -1,4 +1,4 @@
-Set-Location ($MyInvocation.MyCommand.Path | Split-Path -Parent)
+﻿Set-Location ($MyInvocation.MyCommand.Path | Split-Path -Parent)
 
 . .\RenameTable.ps1
 

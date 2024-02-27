@@ -1,4 +1,4 @@
-. .\ExtractReader.ps1
+п»ї. .\ExtractReader.ps1
 
 
 function Generate-ExtractRenameTable($rosreestrExtracts)
@@ -8,7 +8,7 @@ function Generate-ExtractRenameTable($rosreestrExtracts)
     {   
         Write-Host ("Processing: " + $extract.FullName)
         
-        # Ручная загрузка Xml файла, чтобы обойти ограничение MaxCharactersInDocument = 536870912 (0.5gb)
+        # Р СѓС‡РЅР°СЏ Р·Р°РіСЂСѓР·РєР° Xml С„Р°Р№Р»Р°, С‡С‚РѕР±С‹ РѕР±РѕР№С‚Рё РѕРіСЂР°РЅРёС‡РµРЅРёРµ MaxCharactersInDocument = 536870912 (0.5gb)
         [Xml] $extractXml = New-Object Xml
         $extractXml.Load($extract.FullName)
 
@@ -38,8 +38,8 @@ function Generate-ExtractRenameTable($rosreestrExtracts)
 
             $rec = [PSCustomObject]@{
                     Path=$file.FullName
-                    NewBigName = $file.Name.Replace($extractName,$newBigName).Replace(" ЭП",$signPicSuffix)
-                    NewShortName = $file.Name.Replace($extractName,$newShortName).Replace(" ЭП",$signPicSuffix)
+                    NewBigName = $file.Name.Replace($extractName,$newBigName).Replace(" Р­Рџ",$signPicSuffix)
+                    NewShortName = $file.Name.Replace($extractName,$newShortName).Replace(" Р­Рџ",$signPicSuffix)
                     NewFolder = $newFolder
                     CadNum = $extrCadNum
                     ClassExtr = $extrClass
