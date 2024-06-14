@@ -1,10 +1,15 @@
-﻿Set-Location ($MyInvocation.MyCommand.Path | Split-Path -Parent)
+﻿param (
+	# Путь к папке, в которой нужно переименовать xml'ки
+	[string] $path = $env:USERPROFILE + "\desktop\extracts-downloaded",
+	
+	# Нужно ли выписки раскаладывать по папкам?
+	[bool] $isMoveToFolder = $true
+)
+
+Set-Location ($MyInvocation.MyCommand.Path | Split-Path -Parent)
 
 . .\RenameTable.ps1
 
-
-[string] $path = $env:USERPROFILE + "\desktop\extracts-downloaded"
-[bool] $isMoveToFolder = $true
 
 [string] $renTableName = $path + "\_renameTable.csv"
 [DateTime] $errorDate = [datetime]::ParseExact("1990-01-01","yyyy-MM-dd",[Globalization.CultureInfo]::CreateSpecificCulture('ru-RU'))
