@@ -22,7 +22,8 @@ function Get-ExtractCadNum ([Xml] $rosreestrExtractXml)
 			'extract_about_property_construction', 'extract_about_property_build', 'extract_cadastral_value_property', 
 			'extract_transfer_rights_property', 'extract_base_params_room', 'extract_base_params_under_construction', 
             'extract_about_property_under_construction', 'extract_about_property_room',
-            'extract_about_contents_documents_title'} `
+            'extract_about_contents_documents_title',
+			'extract_about_property_car_parking_space'} `
             {[string] $xpath="(//object/common_data/cad_number)[1]/text()"}
 	default { [string] $xpath="Unknown" }
     
@@ -58,6 +59,7 @@ function Get-ExtractDate ([Xml] $rosreestrExtractXml)
 				'exract_decision_refuse_provide_info', 
 				'exract_notice_absence_request_info_11', 'exract_notice_absence_request_info_12', 'exract_notice_absence_request_info_13',
                 'extract_about_contents_documents_title',
+				'extract_about_property_car_parking_space',
                 'extract_about_zone'}`
         {[string] $xpath="/*/details_request/date_receipt_request_reg_authority_rights/text()"}
 
