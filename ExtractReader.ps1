@@ -15,7 +15,8 @@ function Get-ExtractCadNum ([Xml] $rosreestrExtractXml)
                              "|//ExtractObject/ObjectDesc/CadastralNumber/text()"}    
     'Reestr_Extract_Object'{[string] $xpath="/Reestr_Extract_Object/ReestrExtract/ExtractObjectRight/ObjectRight/CadastralNumber/text()" + `
                              "|/Reestr_Extract_Object/ReestrExtract/ExtractObjectRightRefusal/CadastralNumber/text()"}
-    'extract_about_zone'{[string] $xpath="/extract_about_zone/zone_territory_coastline_surveying/zones_and_territories/reg_numb_border/text()"}
+    'extract_about_zone'{[string] $xpath = "/extract_about_zone/zone_territory_coastline_surveying/zones_and_territories/reg_numb_border/text()" + `
+                                          "|/extract_about_zone/zone_territory_coastline_surveying/coastline/reg_numb_border/text()"}
     {$_ -in 'KPOKS', 'KP_OKS', 'KVOKS'}{[string] $xpath="//*[local-name() = 'Realty']/*[@CadastralNumber]/@CadastralNumber"}
     {$_ -in 'Region_Cadastr_Vidimus_KP','Region_Cadastr_Vidimus_KV', 'KPZU'}{[string] $xpath="//*[local-name() = 'Parcel']/@CadastralNumber"}    
     {$_ -in 'extract_base_params_land', 'extract_base_params_build','extract_base_params_construction', 'extract_about_property_land', 
